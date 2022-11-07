@@ -4,6 +4,8 @@ import { locationMutations, locationQueries } from './location'
 import { DateScalar } from './date'
 
 import { organization } from './organization/loader'
+import { locations } from './location/loader'
+import { events } from './event/loader'
 
 export const resolvers = {
   Query: {
@@ -21,6 +23,10 @@ export const resolvers = {
   },
   Location: {
     organization
+  },
+  Organization: {
+    locations,
+    events
   },
   Date: DateScalar
 }

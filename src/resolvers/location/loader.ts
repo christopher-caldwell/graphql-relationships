@@ -1,24 +1,23 @@
-import { DataLoader } from '@caldwell619/data-loader'
+import { BareOrganization } from '../organization/loader'
+import { Resolver } from '../types'
 
-import { DbClient } from '../../db'
-import { Location } from '../../generated-types'
-import { IdOverride } from '../../resolvers/types'
-
-const query = `select 
-id,
-address,
-latitude,
-longitude,
-created_at as "createdAt",
-updated_at as "updatedAt",
-organization_id as "organizationId"
-from location
-where id in $1
+const query = `
+select 
+  id,
+  address, 
+  latitude, 
+  longitude, 
+  created_at as "createdAt", 
+  updated_at as "updatedAt"
+from 
+  location
+where 
+  organization_id = $1;
 `
 
-export const LocationLoader = new DataLoader<IdOverride<Location>>({
-  async fetcher(ids) {
-    const { rows } = await DbClient.query<IdOverride<Location>>(query, [ids])
-    return rows
-  }
-})
+export type BareLocation = Omit<Location, 'organization'>
+export const locations: Resolver<BareOrganization, BareLocation[]> = async ({ id }, _, { Client }) => {
+  // This could be optimized with caching
+  const { rows } = await Client.query<BareLocation>(query, [id])
+  return rows
+}

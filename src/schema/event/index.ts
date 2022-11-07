@@ -11,6 +11,7 @@ export const EventSchema = `#graphql
 
   extend type Query {
     event(id: Int!): Event!
+    events: [Event!]!
     eventsForOrg(orgId: Int!): [Event!]!
   }
 

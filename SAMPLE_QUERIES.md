@@ -37,6 +37,41 @@ mutation CreateEvent {
 query Event {
   event(id: 1) {
     name
+    organization {
+      id
+      name
+    }
+  }
+}
+```
+
+```graphql
+query Organization {
+  organization(id: 1) {
+    name
+    events {
+      name
+      timeOfEvent
+    }
+    locations {
+      address
+      latitude
+      longitude
+    }
+  }
+}
+```
+
+```graphql
+query Location {
+  location(id: 1) {
+    address
+    organization {
+      name
+      events {
+        name
+      }
+    }
   }
 }
 ```

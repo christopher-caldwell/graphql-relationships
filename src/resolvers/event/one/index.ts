@@ -1,15 +1,13 @@
 import { Resolver } from '../../types'
-import { Event, Query, QueryEventArgs } from '../../../generated-types'
+import { QueryEventArgs } from '../../../generated-types'
+import { BareEvent } from '../loader'
 
-export const event: Resolver<undefined, EventResult, QueryEventArgs> = async (_, { id }, { Client }) => {
+export const event: Resolver<undefined, BareEvent, QueryEventArgs> = async (_, { id }, { Client }) => {
   const { rows } = await Client.query<QueryEvent>(query, [id])
   const possibleEvent = rows[0]
   if (!possibleEvent) throw new Error(`Cannot find event by ID: ${id}`)
   return possibleEvent
 }
-
-// Relationship handled by sub resolver
-export type EventResult = Omit<Query['event'], 'organization'>
 
 const query = `
 select 
@@ -24,6 +22,6 @@ from
   event 
 where id = $1;
 `
-type QueryEvent = Omit<Event, 'organization'> & {
+type QueryEvent = BareEvent & {
   organizationId: number
 }

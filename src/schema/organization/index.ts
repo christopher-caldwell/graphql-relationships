@@ -10,7 +10,7 @@ export const OrganizationSchema = `#graphql
 
   extend type Query {
     organization(id: Int!): Organization!
-    organizationsForOrg(orgId: Int!): [Organization!]!
+    organizations: [Organization!]!
   }
 
   extend type Mutation {

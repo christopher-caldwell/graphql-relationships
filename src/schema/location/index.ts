@@ -11,6 +11,7 @@ export const LocationSchema = `#graphql
 
   extend type Query {
     location(id: Int!): Location!
+    locations: [Location!]!
     locationsForOrg(orgId: Int!): [Location!]!
   }
 
